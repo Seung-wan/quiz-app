@@ -7,10 +7,11 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
     'prettier',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', '@tanstack/query'],
   rules: {
     'no-console': 'warn',
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
