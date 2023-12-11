@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 
 import { render } from '@/tests/test-helper';
 
-import Home from '@/features/home/pages/Home';
+import Home from '@/features/home/pages/home';
 
 describe('Home Page', () => {
   it('화면에 "퀴즈 앱" 이라는 타이틀이 존재한다.', () => {

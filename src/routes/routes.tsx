@@ -1,7 +1,10 @@
+import { Suspense } from 'react';
+
+import { Spinner } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
 
-import Home from '@/features/home/pages/Home';
-import Quiz from '@/features/quiz/pages/quiz';
+import { Home } from '@/features/home/pages';
+import { Quiz, QuizResult } from '@/features/quiz/pages';
 
 export const routes = [
   {
@@ -10,6 +13,14 @@ export const routes = [
   },
   {
     path: ROUTE_PATHS.QUIZ,
-    element: <Quiz />,
+    element: (
+      <Suspense fallback={<Spinner />}>
+        <Quiz />
+      </Suspense>
+    ),
+  },
+  {
+    path: ROUTE_PATHS.QUIZ_RESULT,
+    element: <QuizResult />,
   },
 ];
