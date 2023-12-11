@@ -4,6 +4,7 @@ export default {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
   rootDir: 'src',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
