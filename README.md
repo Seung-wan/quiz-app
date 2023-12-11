@@ -1,30 +1,25 @@
-# React + TypeScript + Vite
+## 요구사항
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`[필수 구현]`
 
-Currently, two official plugins are available:
+- [ ] 사용자는 '퀴즈 풀기' 버튼을 클릭하여 퀴즈 풀기를 시작할 수 있다.
+- [ ] 사용자는 문항에 대한 답안을 4개 보기 중에 선택할 수 있다.
+- [ ] 사용자는 답안을 선택하면 다음 문항을 볼 수 있다.
+  - [ ] 답안 선택 후 다음 문항 버튼을 볼 수 있다.
+  - [ ] 답안이 맞았는지 틀렸는지 바로 알 수 있다.
+  - [ ] 다음 문항 버튼을 클릭하여 다음 문항으로 이동할 수 있다.
+- [ ] 모든 문항을 다 풀면 사용자는 다음과 같은 결과 정보를 볼 수 있다.
+  - [ ] 퀴즈를 마칠 때까지 소요된 시간
+  - [ ] 정답 개수
+  - [ ] 오답 수
+  - [ ] 정 오답에 대한 비율을 차트로 표기
+- [ ] 오답 노트 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+`[테스트]`
 
-## Expanding the ESLint configuration
+- 주요 비즈니스 로직과 컴포넌트에 대한 단위 테스트를 필수로 작성한다.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+`[백엔드 API]`
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- 구현에 사용할 퀴즈 정보에 다음 공개 API를 사용한다.
+- https://opentdb.com/api_config.php
