@@ -4,6 +4,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { routes } from '@/routes/routes';
 
+import './index.css';
+
 const container = document.getElementById('root');
 
 if (container) {
