@@ -1,3 +1,3 @@
 export default function Quiz() {
-  return <div>Quiz</div>;
+  return <div>quiz</div>;
 }
