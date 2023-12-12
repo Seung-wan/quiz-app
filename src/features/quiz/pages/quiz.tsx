@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { WithQueryAsyncBoundary, Spinner } from '@/components';
+import { WithQueryAsyncBoundary, Spinner, Beforeunload } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
 import { shuffle } from '@/utils/array';
 
@@ -51,31 +51,33 @@ function Quiz() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-center text-3xl">퀴즈 풀기</h1>
-      <QuizDescription
-        category={category}
-        questionNo={currentStep + 1}
-        question={question}
-        difficulty={difficulty}
-      />
-      <AnswerList
-        answers={answers}
-        currentAnswer={currentAnswer}
-        correctAnswer={correct_answer}
-        onClickAnswer={handleClickAnswer}
-      />
-      <div>{answerMessage}</div>
-      {currentAnswer && (
-        <button
-          className="bg-black p-2 text-white"
-          onClick={handleClickNext}
-          type="button"
-        >
-          다음 문항
-        </button>
-      )}
-    </div>
+    <Beforeunload>
+      <div className="flex flex-col gap-2">
+        <h1 className="text-center text-3xl">퀴즈 풀기</h1>
+        <QuizDescription
+          category={category}
+          questionNo={currentStep + 1}
+          question={question}
+          difficulty={difficulty}
+        />
+        <AnswerList
+          answers={answers}
+          currentAnswer={currentAnswer}
+          correctAnswer={correct_answer}
+          onClickAnswer={handleClickAnswer}
+        />
+        <div>{answerMessage}</div>
+        {currentAnswer && (
+          <button
+            className="bg-black p-2 text-white"
+            onClick={handleClickNext}
+            type="button"
+          >
+            다음 문항
+          </button>
+        )}
+      </div>
+    </Beforeunload>
   );
 }
 
