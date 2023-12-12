@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { differenceInSeconds } from 'date-fns';
 
 import { WithQueryAsyncBoundary, Spinner, Beforeunload } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
@@ -19,10 +20,21 @@ const DEFAULT_QUIZ_FILTERS: QuizFilters = {
 function Quiz() {
   const navigate = useNavigate();
 
-  const { currentStep, currentAnswer, selectAnswer, goNext } = useQuiz();
+  const {
+    currentStep,
+    currentAnswer,
+    answerCount,
+    wrongAnswerCount,
+    selectAnswer,
+    plusAnswerCount,
+    plusWrongAnswerCount,
+    goNext,
+  } = useQuiz();
   const { data } = useQuizsSuspenseQuery(DEFAULT_QUIZ_FILTERS);
   const { category, question, correct_answer, difficulty, incorrect_answers } =
     data.results[currentStep];
+
+  const now = useRef(new Date());
 
   const answers = useMemo(
     () => shuffle([correct_answer, ...incorrect_answers]),
@@ -38,11 +50,26 @@ function Quiz() {
   }, [correct_answer, currentAnswer]);
 
   const handleClickAnswer = (answer: string) => {
+    if (answer === correct_answer) {
+      plusAnswerCount();
+    } else {
+      plusWrongAnswerCount();
+    }
+
     selectAnswer(answer);
   };
 
   const handleClickNext = () => {
     if (currentStep === DEFAULT_QUIZ_FILTERS.amount - 1) {
+      localStorage.setItem(
+        'quizResult',
+        JSON.stringify({
+          playTime: differenceInSeconds(new Date(), now.current),
+          answerCount,
+          wrongAnswerCount,
+        }),
+      );
+
       navigate(ROUTE_PATHS.QUIZ_RESULT);
       return;
     }
