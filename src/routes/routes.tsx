@@ -4,7 +4,11 @@ import { Spinner } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
 
 import { Home } from '@/features/home/pages';
-import { Quiz, QuizResult } from '@/features/quiz/pages';
+import {
+  Quiz,
+  QuizIncorrectAnswerNote,
+  QuizResult,
+} from '@/features/quiz/pages';
 
 export const routes = [
   {
@@ -22,5 +26,9 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ_RESULT,
     element: <QuizResult />,
+  },
+  {
+    path: ROUTE_PATHS.QUIZ_INCORRECT_ANSWER_NOTE,
+    element: <QuizIncorrectAnswerNote />,
   },
 ];

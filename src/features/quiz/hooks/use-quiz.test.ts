@@ -17,10 +17,11 @@ describe('useQuiz', () => {
     expect(result.current.currentAnswer).toBe('this is answer!!!');
   });
 
-  it('goNext 함수를 실행하면 currentStep이 +1 된다.', () => {
+  it('goPrev 함수를 실행하면 currentStep이 -1 된다.', () => {
     const { result } = renderHook(() => useQuiz());
 
     const goNext = result.current.goNext;
+    const goPrev = result.current.goPrev;
 
     expect(result.current.currentStep).toBe(0);
 
@@ -29,6 +30,12 @@ describe('useQuiz', () => {
     });
 
     expect(result.current.currentStep).toBe(1);
+
+    act(() => {
+      goPrev();
+    });
+
+    expect(result.current.currentStep).toBe(0);
   });
 
   it('goNext 함수를 실행하면 currentStep이 +1 된다.', () => {

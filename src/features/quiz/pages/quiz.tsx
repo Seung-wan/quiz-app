@@ -2,9 +2,11 @@ import { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { differenceInSeconds } from 'date-fns';
 
+import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys';
 import { WithQueryAsyncBoundary, Spinner, Beforeunload } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
 import { shuffle } from '@/utils/array';
+import { LocalStorage } from '@/utils/local-storage';
 
 import { AnswerList, QuizDescription } from '../components';
 import { useQuiz, useQuizsSuspenseQuery } from '../hooks';
@@ -53,6 +55,13 @@ function Quiz() {
     if (answer === correct_answer) {
       plusAnswerCount();
     } else {
+      const incorrectQuestions =
+        LocalStorage.getItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS) ?? [];
+      LocalStorage.setItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS, [
+        ...incorrectQuestions,
+        data.results[currentStep],
+      ]);
+
       plusWrongAnswerCount();
     }
 

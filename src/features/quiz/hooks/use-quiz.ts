@@ -18,6 +18,11 @@ export function useQuiz() {
     setWrongAnswerCount(prev => prev + 1);
   }, []);
 
+  const goPrev = useCallback(() => {
+    setCurrentStep(prev => prev - 1);
+    setCurrentAnswer('');
+  }, []);
+
   const goNext = useCallback(() => {
     setCurrentStep(prev => prev + 1);
     setCurrentAnswer('');
@@ -31,6 +36,7 @@ export function useQuiz() {
     selectAnswer,
     plusAnswerCount,
     plusWrongAnswerCount,
+    goPrev,
     goNext,
   };
 }
