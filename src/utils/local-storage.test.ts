@@ -1,5 +1,3 @@
-import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys';
-
 import { LocalStorage } from './local-storage';
 
 const localStorageMock = (() => {
@@ -17,6 +15,9 @@ const localStorageMock = (() => {
     setItem: jest.fn((key: string, value: any) => {
       store[key] = JSON.stringify(value);
     }),
+    removeItem: jest.fn((key: string) => {
+      store[key] = '';
+    }),
     clear: jest.fn(() => {
       store = {};
     }),
@@ -30,8 +31,17 @@ describe('LocalStorage', () => {
     localStorageMock.clear();
   });
 
-  test('setItem 메소드를 실행하면 값이 localStorage에 저장된다.', () => {
-    const key = LOCAL_STORAGE_KEYS.QUIZ_RESULT;
+  it('getItem 메소드를 실행할 때 존재하지 않는 key로 접근하면 null을 리턴한다.', () => {
+    const key = 'notExist';
+
+    const retrievedValue = LocalStorage.getItem(key);
+
+    expect(retrievedValue).toBeNull();
+    expect(localStorageMock.getItem).toHaveBeenCalledWith(key);
+  });
+
+  it('setItem 메소드를 실행하면 값이 localStorage에 저장된다.', () => {
+    const key = 'key';
     const value = { someData: 'test' };
 
     LocalStorage.setItem(key, value);
@@ -46,12 +56,20 @@ describe('LocalStorage', () => {
     expect(localStorageMock.getItem).toHaveBeenCalledWith(key);
   });
 
-  test('localStorage에 존재하지 않는 key로 접근하면 null을 리턴한다.', () => {
-    const key = 'notExist';
+  it('removeItem 메소드를 실행하면 저장된 값이 삭제된다.', () => {
+    const key = 'key';
+    const value = 'value';
 
-    const retrievedValue = LocalStorage.getItem(key);
+    LocalStorage.setItem(key, value);
 
-    expect(retrievedValue).toBeNull();
-    expect(localStorageMock.getItem).toHaveBeenCalledWith(key);
+    const item = LocalStorage.getItem(key);
+
+    expect(item).toBe(value);
+
+    LocalStorage.removeItem(key);
+
+    const newItem = LocalStorage.getItem(key);
+
+    expect(newItem).toBeNull();
   });
 });

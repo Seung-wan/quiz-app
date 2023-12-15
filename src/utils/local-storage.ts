@@ -33,4 +33,16 @@ export class LocalStorage {
       throw new Error('로컬스토리지를 접근할 때 에러가 발생했어요.');
     }
   }
+
+  static removeItem(key: LocalStorageKeys) {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error('로컬스토리지를 접근할 때 에러가 발생했어요.');
+    }
+  }
 }

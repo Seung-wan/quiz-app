@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { differenceInSeconds } from 'date-fns';
 
@@ -85,6 +85,10 @@ function Quiz() {
 
     goNext();
   };
+
+  useEffect(() => {
+    LocalStorage.removeItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS);
+  }, []);
 
   return (
     <Beforeunload>
