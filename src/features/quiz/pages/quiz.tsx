@@ -62,6 +62,19 @@ function Quiz() {
     return currentAnswer === correct_answer ? '정답입니다!' : '오답입니다!';
   }, [correct_answer, currentAnswer]);
 
+  const isLastQuestion = useMemo(
+    () => currentStep === quizFilters.amount - 1,
+    [currentStep, quizFilters.amount],
+  );
+
+  const nextButtonText = useMemo(() => {
+    if (isLastQuestion) {
+      return '결과 보기';
+    }
+
+    return '다음 문제';
+  }, [isLastQuestion]);
+
   const handleClickAnswer = (answer: string) => {
     if (answer === correct_answer) {
       plusAnswerCount();
@@ -82,8 +95,6 @@ function Quiz() {
       answerCount,
       wrongAnswerCount,
     };
-
-    const isLastQuestion = currentStep === quizFilters.amount - 1;
 
     if (isLastQuestion) {
       setQuizResultToLocalStorage(quizResult);
@@ -117,7 +128,7 @@ function Quiz() {
         {currentAnswer && (
           <>
             <AnswerMessage>{answerMessage}</AnswerMessage>
-            <NextButton onClick={handleClickNext}>다음 문항</NextButton>
+            <NextButton onClick={handleClickNext}>{nextButtonText}</NextButton>
           </>
         )}
       </div>
