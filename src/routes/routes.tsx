@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 
 import { ROUTE_PATHS } from '@/constants/routes';
+import { Spinner } from '@/components';
 
 import { Home } from '@/features/home/pages';
 
@@ -18,7 +19,7 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ,
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <Quiz />
       </Suspense>
     ),
@@ -26,7 +27,7 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ_RESULT,
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <QuizResult />
       </Suspense>
     ),
@@ -34,7 +35,7 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ_INCORRECT_ANSWER_NOTE,
     element: (
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <QuizIncorrectAnswerNote />
       </Suspense>
     ),
