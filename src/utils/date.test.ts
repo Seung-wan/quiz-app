@@ -1,4 +1,4 @@
-import { getTimeLabel } from '@/utils/date';
+import { getTimeLabel } from '@/utils';
 
 const context = describe;
 

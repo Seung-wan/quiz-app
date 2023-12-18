@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, esnext: true },
+  env: { browser: true, node: true },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
@@ -12,6 +12,11 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -30,5 +35,6 @@ module.exports = {
     ],
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
+    'react-refresh/only-export-components': 'off',
   },
 };

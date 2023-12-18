@@ -1,4 +1,5 @@
-import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import type { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys';
 
 type LocalStorageKeys =
   (typeof LOCAL_STORAGE_KEYS)[keyof typeof LOCAL_STORAGE_KEYS];
@@ -22,7 +23,7 @@ export class LocalStorage {
     }
   }
 
-  static setItem(key: LocalStorageKeys, value: any) {
+  static setItem(key: LocalStorageKeys, value: unknown) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {

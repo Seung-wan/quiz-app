@@ -3,7 +3,7 @@ import { httpClient } from '@/apis/http-client';
 import type { QuizFilters } from '../hooks';
 import type { Quiz } from '../types';
 
-interface GetQuizsRequest extends QuizFilters {}
+type GetQuizsRequest = QuizFilters;
 
 interface GetQuizsResponse {
   response_code: number;

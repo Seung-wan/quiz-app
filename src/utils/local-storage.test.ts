@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import { LocalStorage } from './local-storage';
 
 const localStorageMock = (() => {
@@ -12,7 +15,7 @@ const localStorageMock = (() => {
 
       return JSON.parse(item);
     }),
-    setItem: jest.fn((key: string, value: any) => {
+    setItem: jest.fn((key: string, value: unknown) => {
       store[key] = JSON.stringify(value);
     }),
     removeItem: jest.fn((key: string) => {

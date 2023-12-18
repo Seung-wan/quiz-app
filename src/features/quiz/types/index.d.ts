@@ -6,3 +6,9 @@ export interface Quiz {
   question: string;
   type: string;
 }
+
+export interface QuizResult {
+  playTime: number;
+  answerCount: number;
+  wrongAnswerCount: number;
+}

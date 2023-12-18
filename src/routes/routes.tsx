@@ -1,14 +1,14 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 
-import { Spinner } from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
 
 import { Home } from '@/features/home/pages';
-import {
-  Quiz,
-  QuizIncorrectAnswerNote,
-  QuizResult,
-} from '@/features/quiz/pages';
+
+const Quiz = lazy(() => import('@/features/quiz/pages/quiz'));
+const QuizResult = lazy(() => import('@/features/quiz/pages/quiz-result'));
+const QuizIncorrectAnswerNote = lazy(
+  () => import('@/features/quiz/pages/quiz-inccorect-answer-note'),
+);
 
 export const routes = [
   {
@@ -18,17 +18,25 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ,
     element: (
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={null}>
         <Quiz />
       </Suspense>
     ),
   },
   {
     path: ROUTE_PATHS.QUIZ_RESULT,
-    element: <QuizResult />,
+    element: (
+      <Suspense fallback={null}>
+        <QuizResult />
+      </Suspense>
+    ),
   },
   {
     path: ROUTE_PATHS.QUIZ_INCORRECT_ANSWER_NOTE,
-    element: <QuizIncorrectAnswerNote />,
+    element: (
+      <Suspense fallback={null}>
+        <QuizIncorrectAnswerNote />
+      </Suspense>
+    ),
   },
 ];

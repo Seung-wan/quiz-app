@@ -1,28 +1,40 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import qs from 'qs';
 import { differenceInSeconds } from 'date-fns';
 
-import { LOCAL_STORAGE_KEYS } from '@/constants/local-storage-keys';
-import { WithQueryAsyncBoundary, Spinner, Beforeunload } from '@/components';
+import {
+  WithQueryAsyncBoundary,
+  Spinner,
+  Beforeunload,
+  Title,
+} from '@/components';
 import { ROUTE_PATHS } from '@/constants/routes';
-import { shuffle } from '@/utils/array';
-import { LocalStorage } from '@/utils/local-storage';
+import { shuffle } from '@/utils';
 
-import { AnswerList, QuizDescription } from '../components';
-import { useQuiz, useQuizsSuspenseQuery } from '../hooks';
+import {
+  AnswerList,
+  AnswerMessage,
+  NextButton,
+  QuizDescription,
+} from '../components';
 import type { QuizFilters } from '../hooks';
-
-const DEFAULT_QUIZ_FILTERS: QuizFilters = {
-  amount: 5,
-  category: 18,
-  difficulty: 'easy',
-  type: 'multiple',
-} as const;
+import { useQuiz, useQuizsSuspenseQuery } from '../hooks';
 
 function Quiz() {
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const quizFilters = useMemo(
+    () =>
+      qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+      }),
+    [location.search],
+  ) as unknown as QuizFilters;
+
   const {
+    quizStartDate,
     currentStep,
     currentAnswer,
     answerCount,
@@ -31,12 +43,15 @@ function Quiz() {
     plusAnswerCount,
     plusWrongAnswerCount,
     goNext,
+    setQuizIncorrectQuestionToLocalStorage,
+    setQuizResultToLocalStorage,
+    removeQuizIncorrectQuestionFromLocalStorage,
   } = useQuiz();
-  const { data } = useQuizsSuspenseQuery(DEFAULT_QUIZ_FILTERS);
+
+  const { data } = useQuizsSuspenseQuery(quizFilters);
+
   const { category, question, correct_answer, difficulty, incorrect_answers } =
     data.results[currentStep];
-
-  const now = useRef(new Date());
 
   const answers = useMemo(
     () => shuffle([correct_answer, ...incorrect_answers]),
@@ -44,10 +59,6 @@ function Quiz() {
   );
 
   const answerMessage = useMemo(() => {
-    if (currentAnswer === '') {
-      return;
-    }
-
     return currentAnswer === correct_answer ? '정답입니다!' : '오답입니다!';
   }, [correct_answer, currentAnswer]);
 
@@ -55,30 +66,27 @@ function Quiz() {
     if (answer === correct_answer) {
       plusAnswerCount();
     } else {
-      const incorrectQuestions =
-        LocalStorage.getItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS) ?? [];
-      LocalStorage.setItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS, [
-        ...incorrectQuestions,
-        data.results[currentStep],
-      ]);
-
       plusWrongAnswerCount();
+      setQuizIncorrectQuestionToLocalStorage(data.results[currentStep]);
     }
 
     selectAnswer(answer);
   };
 
   const handleClickNext = () => {
-    if (currentStep === DEFAULT_QUIZ_FILTERS.amount - 1) {
-      localStorage.setItem(
-        'quizResult',
-        JSON.stringify({
-          playTime: differenceInSeconds(new Date(), now.current),
-          answerCount,
-          wrongAnswerCount,
-        }),
-      );
+    const quizEndDate = new Date();
+    const playTime = differenceInSeconds(quizEndDate, quizStartDate.current);
 
+    const quizResult = {
+      playTime,
+      answerCount,
+      wrongAnswerCount,
+    };
+
+    const isLastQuestion = currentStep === quizFilters.amount - 1;
+
+    if (isLastQuestion) {
+      setQuizResultToLocalStorage(quizResult);
       navigate(ROUTE_PATHS.QUIZ_RESULT);
       return;
     }
@@ -87,13 +95,13 @@ function Quiz() {
   };
 
   useEffect(() => {
-    LocalStorage.removeItem(LOCAL_STORAGE_KEYS.QUIZ_INCORRECT_QUESTIONS);
-  }, []);
+    removeQuizIncorrectQuestionFromLocalStorage();
+  }, [removeQuizIncorrectQuestionFromLocalStorage]);
 
   return (
     <Beforeunload>
       <div className="flex flex-col gap-2">
-        <h1 className="text-center text-3xl">퀴즈 풀기</h1>
+        <Title>퀴즈 풀기</Title>
         <QuizDescription
           category={category}
           questionNo={currentStep + 1}
@@ -106,15 +114,11 @@ function Quiz() {
           correctAnswer={correct_answer}
           onClickAnswer={handleClickAnswer}
         />
-        <div>{answerMessage}</div>
         {currentAnswer && (
-          <button
-            className="bg-black p-2 text-white"
-            onClick={handleClickNext}
-            type="button"
-          >
-            다음 문항
-          </button>
+          <>
+            <AnswerMessage>{answerMessage}</AnswerMessage>
+            <NextButton onClick={handleClickNext}>다음 문항</NextButton>
+          </>
         )}
       </div>
     </Beforeunload>

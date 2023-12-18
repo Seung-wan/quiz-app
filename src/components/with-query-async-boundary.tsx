@@ -27,6 +27,7 @@ export default function WithQueryAsyncBoundary(
   };
 
   if (!import.meta.env.PROD) {
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     const name = Component.displayName || Component.name || 'Component';
     Wrapped.displayName = `withAsyncBoundary(${name})`;
   }

@@ -1,4 +1,4 @@
-import { render } from '@/tests/test-helper';
+import { render } from '@/tests';
 
 import { Spinner } from '.';
 import { screen } from '@testing-library/react';

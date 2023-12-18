@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 
-import { render } from '@/tests/test-helper';
+import { render } from '@/tests';
 
 import { QuizDescription } from '.';
 

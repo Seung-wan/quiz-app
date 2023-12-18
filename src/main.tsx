@@ -12,6 +12,7 @@ const container = document.getElementById('root');
 
 if (container) {
   const router = createBrowserRouter(routes);
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
