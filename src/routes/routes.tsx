@@ -19,7 +19,7 @@ export const routes = [
   {
     path: ROUTE_PATHS.QUIZ,
     element: (
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={null}>
         <Quiz />
       </Suspense>
     ),
